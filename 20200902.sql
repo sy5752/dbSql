@@ -188,11 +188,4 @@ SELECT 'SELECT * FROM' || table_name || ';'
 FROM user_tables;
 
 
-        
-
-
-
-
-
-
 

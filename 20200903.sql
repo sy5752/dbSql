@@ -157,6 +157,35 @@ SELECT mem_id, mem_name
 FROM member
 WHERE mem_name LIKE '%이%';
 
+별칭 기술 : 텍스트, "텍스트" , / '텍스트'
+SELECT empno "ename"
+FROM emp;
+
+WHERE 절 : 스프레드 시트
+            - filter : 전체 데이터중에서 내가 원하는 행만 나오도록 제한
+            
+비교연산 <, >, =, !=, <>, <=, >=      
+    BETWEEN AND
+    IN
+연산자를 배울 때 (복습학 때) 기억할 부분은 해당 연산자 X항 연산자 인지하자
+
+1             +       5 
+피연산자     연산자    피연산자
+
+a++ : 단항연산자
+
+int a = b > 5? 10 : 20;
+
+BETWEEN AND : 비교대상 BETWEEN 시작값 AND 종료값
+IN : 비교대상 IN (값1, 값2....)
+LIKE : 비교대상 LIKE '매칭문자열 % _'
+
+WHERE deptno BETWEEN 30 AND 50;
+
+SELECT 8
+FROM emp
+WHERE 10 BETWEEN 10 AND 50;
+
 
 
 

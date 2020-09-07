@@ -8,7 +8,7 @@ WHERE 절 : 스프레드 시트
 비교연산 <, >, =, !=, <>, <=, >=      
     BETWEEN AND
     IN
-연산자를 배울 때 (복습학 때) 기억할 부분은 해당 연산자 X항 연산자 인지하자
+연산자를 배울 때 (복습할 때) 기억할 부분은 해당 연산자 X항 연산자 인지하자
 
 1             +       5 
 피연산자     연산자    피연산자
@@ -145,12 +145,38 @@ FROM emp
 WHERE deptno IN (20,30)
 AND hiredate >=TO_DATE('1981/06/01','yyyy/mm/dd');
 
-
+(11번)
 SELECT *
 FROM emp
 WHERE job IN 'SALESMAN'
-OR enpno = '78%' 
-AND hiredate >=TO_DATE('1981/06/01','yyyy/mm/dd');
+OR hiredate >=TO_DATE('1981/06/01','yyyy/mm/dd');
+
+(12번)
+SELECT *
+FROM emp
+WHERE job IN 'SALESMAN'
+OR empno LIKE '78%';
+
+(13번)
+SELECT *
+FROM emp
+WHERE empno BETWEEN 7800 AND 7899
+OR empno BETWEEN 780 AND 789
+OR empno BETWEEN 78 AND 78
+OR job IN 'SALESMAN';
+
+
+(14번)
+SELECT *
+FROM emp
+WHERE job IN 'SALESMAN'
+or hiredate >=TO_DATE('1981/06/01','yyyy/mm/dd')
+AND empno like '78%';
+
+ 
+
+SELECT *
+FROM emp 
 
 
 ==============중요 ==============
@@ -292,7 +318,7 @@ FROM(SELECT ROWNUM rn, a.*
         (SELECT ROWNUM, empno, ename
         FROM emp
         ORDER BY ename) a)
-WHERE rn BETWEEN (: page - 1) * :pageSize + 1 AND :pageSize; 
+WHERE rn BETWEEN (: page - 1) * :pageSize + 1 AND : page * :pageSize; 
 
 SELECT 절에 * 사용했는데 ,를 통해 다른 특수 컬럼이나 EXPRESSION을 사용할 경우는
 *앞에 해당 데이터가 어떤 테이블에서 왔는지 명시를 해줘야 한다(한정자)
@@ -305,6 +331,9 @@ FROM emp;
 별칭은 테이블에도 적용 가능, 단 컬럼이랑 다르게 AS옵션은 없다
 SELECT ROWNUM, e.*
 FROM emp e;
+
+
+
 
 
   

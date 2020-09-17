@@ -112,6 +112,10 @@ SELECT *
 FROM emp
 WHERE mgr IN (7698, 7839, NULL);
 
+SELECT *
+FROM emp
+WHERE mgr NOT IN (7698, 7839, NULL);--(결과가 안나옴 이미 7698, 7839를 만족한다는건 NULL값이 아님)
+
 NULL값도 나오게 하려면
 SELECT *
 FROM emp
@@ -331,6 +335,48 @@ FROM emp;
 별칭은 테이블에도 적용 가능, 단 컬럼이랑 다르게 AS옵션은 없다
 SELECT ROWNUM, e.*
 FROM emp e;
+
+
+(11번)
+SELECT *
+FROM emp
+WHERE job IN 'SALESMAN'
+OR hiredate >=TO_DATE('1981/06/01','yyyy/mm/dd');
+
+(12번)
+SELECT *
+FROM emp
+WHERE job IN 'SALESMAN'
+OR empno LIKE '78%';
+
+(13번)
+SELECT *
+FROM emp
+WHERE (empno BETWEEN 7800 AND 7899
+OR empno BETWEEN 780 AND 789
+OR empno BETWEEN 78 AND 78)
+OR job IN 'SALESMAN';
+
+SELECT *
+FROM emp
+WHERE job = 'SALESMAN'
+OR(empno BETWEEN 7800 AND 7899
+OR empno BETWEEN 780 AND 789
+OR empno BETWEEN 78 AND 78);
+
+
+(14번)
+SELECT *
+FROM emp
+WHERE job IN 'SALESMAN'
+or hiredate >=TO_DATE('1981/06/01','yyyy/mm/dd')
+AND empno like '78%';
+
+
+ROWNUM : 1부터 읽어야 된다
+        SELSECT절이 ORDER BY 절보다 먼저 실행된다
+        => ROWNUM을 이용하여 순서를 부여하려면 정렬부터 해야한다.
+          => 인라인뷰 (ORDER BY - ROWNUM을 분리)
 
 
 

@@ -164,6 +164,7 @@ SELECT empno, ename, hiredate,
     END contact_to_doctor
 FROM emp;
 
+[실습 cond3]
 SELECT userid, usernm, reg_dt,
     CASE
         WHEN MOD (TO_CHAR(reg_dt,'YYYY'),2) = MOD (TO_CHAR(SYSDATE ,'YYYY'),2) THEN '건강검진대상자'

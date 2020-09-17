@@ -82,13 +82,15 @@ ex : SELECT *
 GROUP BY에 대상이 되는 행들을 제한할때 WHERE절을 사용
 
     [실습 1]
-    SELECT MAX(sal) MAX_SAL, MIN(sal) MIN_SAL,ROUND(AVG(sal),2) AVG_SAL, SUM(sal) SUM_SAL, 
-            COUNT(sal) COUNT_SAL,COUNT(mgr) COUNT_MGR, COUNT(*)COUNT_ALL
+    SELECT MAX(sal) MAX_SAL, MIN(sal) MIN_SAL,ROUND(AVG(sal),2) AVG_SAL, 
+            SUM(sal) SUM_SAL, COUNT(sal) COUNT_SAL,COUNT(mgr) COUNT_MGR, 
+            COUNT(*)COUNT_ALL
     FROM emp;
     
     [실습 2]
-    SELECT deptno, MAX(sal)MAX_SAL, MIN(sal) MIN_SAL,ROUND(AVG(sal),2) AVG_SAL, SUM(sal) SUM_SAL, 
-            COUNT(sal) COUNT_SAL,COUNT(mgr) COUNT_MGR, COUNT(*)COUNT_ALL 
+    SELECT deptno, MAX(sal)MAX_SAL, MIN(sal) MIN_SAL,ROUND(AVG(sal),2) AVG_SAL,
+            SUM(sal) SUM_SAL, COUNT(sal) COUNT_SAL,COUNT(mgr) COUNT_MGR, 
+            COUNT(*)COUNT_ALL 
     FROM emp
     GROUP BY deptno;
     
@@ -100,7 +102,7 @@ GROUP BY에 대상이 되는 행들을 제한할때 WHERE절을 사용
             WHEN deptno  = 20 THEN 'RESEARCH'
             WHEN deptno  = 30 THEN 'SALES'
             END dname
-    FROM emp 
+    FROM emp
     GROUP BY deptno
     ORDER BY deptno ;
     
@@ -114,6 +116,172 @@ GROUP BY에 대상이 되는 행들을 제한할때 WHERE절을 사용
     SELECT TO_CHAR(hiredate,'yyyymm') hire_yyyymm, COUNT(*)cnt
     FROM emp
     GROUP BY TO_CHAR(hiredate,'yyyymm');
+    
+    [실습 grp5]
+    SELECT TO_CHAR(hiredate,'YYYY')hiredate, COUNT(*) cnt 
+    FROM emp
+    GROUP BY TO_CHAR(hiredate,'YYYY');
+
+    [실습 grp6]
+    SELECT COUNT(deptno) cnt
+    FROM dept;
+
+    정답
+    SELECT COUNT(*) cnt
+    FROM dept;
+
+    [실습 grp7] -- 직원이 속한 부서의 개수 3
+    SELECT COUNT(COUNT(deptno)) cnt
+    FROM emp
+    GROUP BY deptno;
+
+    SELECT COUNT(*)
+    FROM
+    (SELECT deptno
+    FROM emp
+    GROUP BY deptno) a;
+
+[실습 join0]
+SELECT empno,ename,deptno, dname
+FROM emp NATURAL JOIN dept
+ORDER BY deptno;
+
+SELECT emp.empno,emp.ename,emp.deptno, dept.dname
+FROM emp JOIN dept ON (emp.deptno = dept.deptno)
+ORDER BY emp.deptno;
+
+SELECT emp.empno,emp.ename,emp.deptno, dept.dname
+FROM emp,dept
+WHERE emp.deptno = dept.deptno
+ORDER BY emp.deptno;
+
+[실습 join0_1]
+SELECT empno,ename,deptno,dname
+FROM emp NATURAL JOIN dept
+WHERE deptno IN (10,30);
+
+SELECT emp.empno,emp.ename,emp.deptno,emp.dname
+FROM emp NATURAL JOIN dept
+WHERE deptno IN (10,30)
+AND emp.deptno=dept.deptno
+ORDER BY emp.deptno;
+
+[실습 join0_2]
+SELECT empno,ename,sal,deptno,dname
+FROM emp NATURAL JOIN dept
+WHERE sal > 2500
+ORDER BY deptno;
+
+[실습 join0_3]
+SELECT empno,ename,sal,deptno,dname
+FROM emp NATURAL JOIN dept
+WHERE sal > 2500 AND empno >7600;
+
+[실습 join0_4]
+SELECT empno,ename,sal,deptno,dname
+FROM emp NATURAL JOIN dept
+WHERE sal > 2500 AND empno >7600 AND dname ='RESEARCH'
+ORDER BY empno DESC;
+
+SELECT HIRE_YYYY, COUNT(HIRE_YYYY) CNT
+FROM (SELECT TO_CHAR(hiredate,'yyyy')HIRE_YYYY
+FROM emp) 
+GROUP BY HIRE_YYYY
+ORDER BY CNT ;
+--grp5(2)
+SELECT TO_CHAR(hiredate,'yyyy') HIRE_YYYY, COUNT(hiredate) CNT
+FROM emp
+GROUP BY TO_CHAR(hiredate,'yyyy');
+
+--grp6
+SELECT COUNT(COUNT(dname))cnt
+FROM dept
+GROUP BY deptno;
+
+--grp7
+SELECT COUNT(COUNT(deptno)) CNT
+FROM emp
+GROUP BY deptno;
+
+--join0
+-- Oracle
+SELECT e.empno, e.ename, d.deptno, d.dname
+FROM emp e, dept d
+WHERE e.deptno = d.deptno
+ORDER BY e.deptno;
+-- Sql(JOIN ON)
+SELECT e.empno, e.ename, d.deptno, d.dname
+FROM emp e JOIN dept d ON(e.deptno = d.deptno)
+ORDER BY e.deptno;
+-- Sql(JOIN USING)
+SELECT empno, ename, deptno, dname
+FROM emp JOIN dept USING(deptno)
+ORDER BY deptno;
+-- Sql(NATURAL JOIN)
+SELECT empno, ename, deptno, dname
+FROM emp NATURAL JOIN dept
+ORDER BY deptno;
+
+--join0_1
+-- Oracle
+SELECT e.empno, e.ename, d.deptno, d.dname
+FROM emp e, dept d
+WHERE e.deptno = d.deptno AND e.deptno IN (10,30);
+-- Sql(JOIN ON)
+SELECT e.empno, e.ename, d.deptno, d.dname
+FROM emp e JOIN dept d ON(e.deptno = d.deptno AND e.deptno IN (10,30));
+-- Sql(JOIN USING, NATURAL JOIN 동일함)
+SELECT empno, ename, deptno, dname
+FROM emp JOIN dept USING(deptno)
+WHERE emp.sal >2500
+ORDER BY deptno;
+
+--join0_2
+--Oracle
+SELECT e.empno, e.ename,sal, d.deptno, d.dname
+FROM emp e, dept d
+WHERE e.deptno = d.deptno AND e.sal >2500;
+--Sql(JOIN ON)
+SELECT e.empno, e.ename,sal, d.deptno, d.dname
+FROM emp e JOIN dept d ON(e.deptno = d.deptno AND e.sal >2500)
+ORDER BY e.deptno;
+-- Sql(JOIN USING, NATURAL JOIN 동일함)
+SELECT empno, ename,sal, deptno, dname
+FROM emp JOIN dept USING(deptno)
+WHERE emp.sal >2500 AND emp.empno >7600
+ORDER BY deptno;
+
+
+--join0_3
+--Oracle
+SELECT e.empno, e.ename,sal, d.deptno, d.dname
+FROM emp e, dept d
+WHERE e.deptno = d.deptno AND e.sal >2500 AND e.empno > 7600;
+--Sql(JOIN ON)
+SELECT e.empno, e.ename,sal, d.deptno, d.dname
+FROM emp e JOIN dept d ON(e.deptno = d.deptno AND e.sal >2500 AND e.empno > 7600)
+ORDER BY e.deptno;
+-- Sql(JOIN USING, NATURAL JOIN 동일함)
+SELECT empno, ename,sal, deptno, dname
+FROM emp JOIN dept USING(deptno)
+WHERE emp.sal >2500 AND emp.empno >7600
+ORDER BY deptno;
+
+--join0_4
+--Oracle
+SELECT e.empno, e.ename, d.deptno, d.dname
+FROM emp e, dept d
+WHERE e.deptno = d.deptno AND e.sal >2500 AND e.empno > 7600 AND d.dname = 'RESEARCH';
+--Sql(JOIN ON)
+SELECT e.empno, e.ename,sal, d.deptno, d.dname
+FROM emp e JOIN dept d ON(e.deptno = d.deptno AND e.sal >2500 AND e.empno > 7600 AND d.dname = 'RESEARCH')
+ORDER BY e.deptno;
+-- Sql(JOIN USING, NATURAL JOIN 동일함)
+SELECT empno, ename,sal, deptno, dname
+FROM emp JOIN dept USING(deptno)
+WHERE emp.sal >2500 AND emp.empno >7600 AND dept.dname = 'RESEARCH'
+ORDER BY deptno;
+
     
 ********** WHERE + JOIN SELECT SQL의 모든 것 **************
 JOIN : 다른 테이블과 연결하여 데이터를 확장하는 문법
@@ -231,6 +399,10 @@ FROM emp JOIN salgrade ON (sal >= losal AND sal <= hisal);
 
 SELECT *
 FROM salgrade;
+
+
+
+
 
 
 

@@ -31,6 +31,37 @@ AND gb = 'KFC';
 
 --풀이--
 
+SELECT a.sido, a.sigungu, a.cnt, b.cnt, ROUND(a.cnt/b.cnt, 2) di
+FROM
+(SELECT sido, sigungu, COUNT(*) cnt
+ FROM fastfood
+ WHERE gb IN ( 'KFC', '맥도날드', '버거킹')
+ GROUP BY sido, sigungu) a,
+
+(SELECT sido, sigungu, COUNT(*) cnt
+ FROM fastfood
+ WHERE gb = '롯데리아'
+ GROUP BY sido, sigungu) b
+WHERE a.sido = b.sido
+AND a.sigungu = b.sigungu
+ORDER BY di DESC;
+
+
+
+테이블 한번만 읽고 풀기
+SELECT sido, sigungu, 
+        ROUND((NVL(SUM(DECODE(gb, 'KFC', cnt)), 0) +       
+        NVL(SUM(DECODE(gb, '버거킹', cnt)), 0) +
+        NVL(SUM(DECODE(gb, '맥도날드', cnt)), 0) ) /        
+        NVL(SUM(DECODE(gb, '롯데리아', cnt)), 1), 2) di 
+FROM 
+(SELECT sido, sigungu, gb, COUNT(*) cnt
+ FROM fastfood
+ WHERE gb IN ('KFC', '롯데리아', '버거킹', '맥도날드')
+ GROUP BY sido, sigungu, gb)
+GROUP BY sido, sigungu 
+ORDER BY di DESC;
+
 KFC - 66 롯데리아 - 188 버거킹- 104 맥도날드- 126
 
 SELECT a.sido, a.sigungu, a.cnt , b.cnt, a.cnt

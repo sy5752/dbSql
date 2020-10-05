@@ -118,7 +118,7 @@ GROUP BY에 대상이 되는 행들을 제한할때 WHERE절을 사용
     GROUP BY TO_CHAR(hiredate,'yyyymm');
     
     [실습 grp5]
-    SELECT TO_CHAR(hiredate,'YYYY')hiredate, COUNT(*) cnt 
+    SELECT TO_CHAR(hiredate,'YYYY')hire_YYYY, COUNT(*) cnt 
     FROM emp
     GROUP BY TO_CHAR(hiredate,'YYYY');
 

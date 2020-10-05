@@ -138,7 +138,7 @@ DESC dept;
 컬럼을 기술하지 않았기 때문에 테이블에 정의된 모든 컬럼에 대해 값을 기술해야하나
 3개중 2개만 기술하여 에러 발생
 INSERT INTO dept VALUES( 97, 'DDIT');
-SELECT*
+SELECT *
 FROM dept;
 
 3. SELECT 결과를 (여러행일 수도 있다) 테이블에 입력

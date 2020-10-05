@@ -86,7 +86,7 @@ FROM(SELECT ROWNUM rn, a.*
         ORDER BY ename) a)
 WHERE rn BETWEEN 11 AND 14;
 
-SLECT dummy
+SELECT dummy
 FROM dual;
 
 ORACLE 함수 분류

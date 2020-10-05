@@ -38,7 +38,8 @@ FROM
 FROM customer,cycle
 WHERE customer.cid=cycle.cid
 AND  customer.cnm IN ('brown', 'sally')) a, product
-WHERE a.pid = product.pid;
+WHERE a.pid = product.pid
+ORDER BY cid;
 
 [실습 join6]
 SELECT cy.cid, cu.cnm, p.pid, p.pnm, SUM(cy.cnt) cnt 
